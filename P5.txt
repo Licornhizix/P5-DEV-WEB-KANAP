@@ -1,0 +1,4 @@
+03/05/2022
+
+creation script.js
+utilisation de la methode fetch
