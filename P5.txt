@@ -2,3 +2,16 @@
 
 creation script.js
 utilisation de la methode fetch
+
+
+19/05/2022:
+
+Fait:
+-push du projet sur script
+
+
+objectifs:
+-sauvegarder 2 élements dans le scripts.
+-faire 2 chapitres du cours
+-Codecademy 1 chapitre.
+

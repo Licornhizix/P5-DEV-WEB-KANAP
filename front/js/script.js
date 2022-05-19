@@ -10,15 +10,32 @@ async function getProducts() {
             console.log(value);
             const itemscontainer = document.getElementById('items');
             for (var product of value) {
+
                 var nameproduct = document.createElement('h3');
                 nameproduct.setAttribute("class", 'productName');
                 nameproduct.innerText = product.name;
-                var colorsproduct = document.createElement('h2');
-                colorsproduct.innerText = product.colors;
-                var divproduct = document.createElement('div');
-                itemscontainer.appendChild(divproduct);
-                divproduct.appendChild(nameproduct);
-                itemscontainer.appendChild(colorsproduct);
+                var articleproduct = document.createElement('article');
+                var link = document.createElement('a');
+                itemscontainer.appendChild(link);
+                itemscontainer.appendChild(articleproduct);
+                articleproduct.appendChild(nameproduct);
+                var img = document.createElement('img');
+                img.setAttribute('src', '/back/images/');
+                img.innerText = product.imageUrl;
+                articleproduct.appendChild(img);
+                var paragraphe = document.createElement('p');
+                paragraphe.setAttribute("class", 'productDescription');
+                paragraphe.innerText = product.description;
+                articleproduct.appendChild(paragraphe);
+                link.appendChild(articleproduct);
+
+                /* derniere frappe : essai d'afficher les images des differents canapé */
+
+
+
+
+
+
 
             };
             /*           <a href="./product.html?id=42">
