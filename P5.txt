@@ -1,0 +1,37 @@
+03/05/2022
+
+creation script.js
+utilisation de la methode fetch
+
+
+19/05/2022:
+
+Fait:
+-push du projet sur script
+
+
+objectifs:
+-sauvegarder 2 élements dans le scripts.
+-faire 2 chapitres du cours
+-Codecademy 1 chapitre.
+
+21/05/2022
+
+-objectif:
+-avancer dans le cours finir la premiere partie>ok
+-codecademy finir un chapitre>echecs
+-essayer d'avancer dans le projet avec le raccordement des images >ok
+
+22/05/2022
+
+-objectif:
+-avancer dans le cours finir la deuxieme partie>non
+-codecademy finir un chapitre>ok
+-identifier le bug de l'image isolé >non
+
+23/05/2022
+
+-avancer dans cours
+-le bug sur image
+
+
