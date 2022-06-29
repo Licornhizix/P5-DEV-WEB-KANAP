@@ -1,14 +1,17 @@
-//async function getProducts() {}
-let currentCart = localStorage.getItem('produit');
+//Définition du Localstorage
+let currentCart = JSON.stringify(localStorage);
 let cartJson = JSON.parse(currentCart);
 
 console.log(cartJson.name);
 
-
+let itemscontainer = document.getElementById('cart__items');
 async function getProducts() {
   for (indexItem in cartJson) {
     console.log(indexItem);
-    let idproduct = cartJson[indexItem].id
+
+    let currentProduct = JSON.parse(localStorage.getItem(indexItem));
+    console.log(currentProduct.id);
+    let idproduct = currentProduct.id;
     fetch("http://localhost:3000/api/products/" + idproduct)
       .then(function (res) {
         if (res.ok) {
@@ -19,54 +22,32 @@ async function getProducts() {
       .then(function (product) {
         console.log(product);
 
-        /*
-        Recuperer le prix, l'image, et les containers
-        
-        */
-        const itemscontainer = document.getElementsById('cart__items');
 
+        // Recuperer le prix, l'image, et les containers
 
         var img = document.createElement('img');
         img.setAttribute("alt", product.name);
         img.src = product.imageUrl;
-        itemscontainer.appendChild(img);
+        itemscontainer.appendChild(img); //insertion de l'enfant ds élement parent(poupée russe)
+
+        //création d'un élément
+
+        let article = document.createElement('article'); //declaration variable avant de créé element
+        article.setAttribute('class', 'cart__item'); //definition des attributs (1 attribut/ligne)
+        article.setAttribute('data-id', 'product.id');
+        article.setAttribute('data-color', 'product.colors');
+
+        //a la fin, declaration via appendchild des enfants directs
 
         var price = document.getElementById('price');
         price.insertAdjacentHTML('afterbegin', product.price)
 
-        /*var img = document.createElement('img');
-      img.setAttribute("alt", product.name);
-      img.src = product.imageUrl;
-      divproduct.appendChild(img);
-
-      var price = document.getElementById('price');
-      price.insertAdjacentHTML('afterbegin', product.price)
-
-      var name = document.getElementById('title');
-      name.insertAdjacentHTML('afterbegin', product.name)
-
-      var description = document.getElementById('description');
-      description.insertAdjacentHTML('afterbegin', product.description)
-      var colors = document.getElementById('colors');
-
-      const buttonAjoutPanier = document.getElementById('addToCart');
-      buttonAjoutPanier.addEventListener('click', ajoutPanier);
-
-*/
-      })
-      .catch(function (err) {
-        // Une erreur est survenue
-        console.log(err);
-      })
-
-  }
-
-}
-getProducts();
+        let productDivImg = document.createElement("div");
+        productArticle.appendChild(productDivImg);
+        productDivImg.className = "cart__item__img";
 
 
-
-/*<article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
+        /*<article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
               <div class="cart__item__img">
                 <img src="../images/product01.jpg" alt="Photographie d'un canapé">
               </div>
@@ -89,3 +70,33 @@ getProducts();
             </article> -->
 
             */
+
+        /*var img = document.createElement('img');
+              img.setAttribute("alt", product.name);
+              img.src = product.imageUrl;
+              divproduct.appendChild(img);
+
+              var price = document.getElementById('price');
+              price.insertAdjacentHTML('afterbegin', product.price)
+
+              var name = document.getElementById('title');
+              name.insertAdjacentHTML('afterbegin', product.name)
+
+              var description = document.getElementById('description');
+              description.insertAdjacentHTML('afterbegin', product.description)
+              var colors = document.getElementById('colors');
+
+              const buttonAjoutPanier = document.getElementById('addToCart');
+              buttonAjoutPanier.addEventListener('click', ajoutPanier);
+
+        */
+      })
+      .catch(function (err) {
+        // Une erreur est survenue
+        console.log(err);
+      })
+
+  }
+
+}
+getProducts();

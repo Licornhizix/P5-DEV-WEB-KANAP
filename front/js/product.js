@@ -65,7 +65,7 @@ function ajoutPanier() {
 
 
     /*On additionne les elements déja presents au panier en évitant une MAJ(ecrasement de données)*/
-    let currentCart = JSON.parse(localStorage.getItem('produit', 'uk:' + idproduct + '' + selectColor))
+    let currentCart = JSON.parse(localStorage.getItem(idproduct + '' + selectColor))
     console.log(currentCart);
     if (currentCart) {
 
@@ -81,7 +81,7 @@ function ajoutPanier() {
         'uk': idproduct + '' + selectColor
     }
     /*envoie des élements dans le local storage*/
-    localStorage.setItem('produit', JSON.stringify(myproduct));
+    localStorage.setItem(idproduct + '' + selectColor, JSON.stringify(myproduct));
 
 
 }
