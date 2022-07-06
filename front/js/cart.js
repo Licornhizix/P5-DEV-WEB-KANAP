@@ -25,26 +25,101 @@ async function getProducts() {
 
         // Recuperer le prix, l'image, et les containers
 
-        var img = document.createElement('img');
-        img.setAttribute("alt", product.name);
-        img.src = product.imageUrl;
-        itemscontainer.appendChild(img); //insertion de l'enfant ds élement parent(poupée russe)
-
         //création d'un élément
 
         let article = document.createElement('article'); //declaration variable avant de créé element
         article.setAttribute('class', 'cart__item'); //definition des attributs (1 attribut/ligne)
         article.setAttribute('data-id', 'product.id');
         article.setAttribute('data-color', 'product.colors');
+        itemscontainer.appendChild(article); //insertion de l'enfant article ds élement parent(section)
+
+        //div englobant l'image
+        let productDivImg = document.createElement('div'); //declaration variable avant de créé plusieurs elements div 
+        productDivImg.setAttribute('class', 'cart__item__img'); //definition des attributs (1 attribut/ligne)
+        article.appendChild(productDivImg);
+
+        //image
+        var img = document.createElement('img');
+        img.setAttribute("alt", product.name);
+        img.src = product.imageUrl;
+        productDivImg.appendChild(img);
+
+        //div englobant le div de la description
+        let productDivlook = document.createElement('div');
+        productDivlook.setAttribute('class', 'cart__item__content');
+        article.appendChild(productDivlook);
+
+        //div la description
+        let productDivunder = document.createElement('div');
+        productDivunder.setAttribute('class', 'cart__item__content__description');
+        productDivlook.appendChild(productDivunder);
 
         //a la fin, declaration via appendchild des enfants directs
 
-        var price = document.getElementById('price');
-        price.insertAdjacentHTML('afterbegin', product.price)
+        //description : le nom
 
-        let productDivImg = document.createElement("div");
-        productArticle.appendChild(productDivImg);
-        productDivImg.className = "cart__item__img";
+        let name = document.createElement('h2');
+        name.insertAdjacentHTML('afterbegin', product.name)
+        productDivunder.appendChild(name);
+
+        //description : la couleur 
+
+        let colors = document.createElement('p');
+        colors.insertAdjacentHTML('afterbegin', product.colors)
+        productDivunder.appendChild(colors);
+
+        //description : le prix
+
+        let price = document.createElement('p');
+        price.insertAdjacentHTML('afterbegin', product.price)
+        productDivunder.appendChild(price);
+
+
+        //div englobant les paramètres 
+        let productDivsetting = document.createElement('div');
+        productDivsetting.setAttribute('class', 'cart__item__settings');
+        article.appendChild(productDivsetting);
+
+        //div englobant les paramètres quantité
+
+        let productDivQuant = document.createElement('div');
+        productDivQuant.setAttribute('class', 'cart__item__quantity');
+        productDivsetting.appendChild(productDivQuant);
+
+        //la quantité
+
+        let quant = document.createElement('p');
+        quant.insertAdjacentHTML('afterbegin', product.quant)
+        productDivQuant.appendChild(quant);
+
+
+        //Input
+
+        let input = document.createElement('input');
+        input.insertAdjacentHTML('afterbegin', product.quant)
+        productDivQuant.appendChild(input);
+
+        //div englobant le paramètre suppression
+
+        let productDivDelete = document.createElement('div');
+        productDivDelete.setAttribute('class', 'cart__item__content__settings__delete');
+        productDivsetting.appendChild(productDivDelete);
+
+        //suppression
+
+        /*var delete = document.createElement('p');
+        delete.insertAdjacentHTML('afterbegin', delete)
+        delete.setAttribute('class', 'deleteItem');
+        productDivDelete.appendChild(delete);
+
+
+
+
+
+
+
+
+
 
 
         /*<article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
