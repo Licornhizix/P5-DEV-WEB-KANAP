@@ -62,13 +62,13 @@ async function getProducts() {
         name.insertAdjacentHTML('afterbegin', product.name)
         productDivunder.appendChild(name);
 
-        //description : la couleur 
+        //description : la couleur ???
 
         let colors = document.createElement('p');
         colors.insertAdjacentHTML('afterbegin', product.colors)
         productDivunder.appendChild(colors);
 
-        //description : le prix
+        //description : le prix 
 
         let price = document.createElement('p');
         price.insertAdjacentHTML('afterbegin', product.price)
@@ -80,42 +80,38 @@ async function getProducts() {
         productDivsetting.setAttribute('class', 'cart__item__settings');
         article.appendChild(productDivsetting);
 
-        //div englobant les paramètres quantité
+        //div englobant les paramètres quantité 
 
         let productDivQuant = document.createElement('div');
-        productDivQuant.setAttribute('class', 'cart__item__quantity');
-        productDivsetting.appendChild(productDivQuant);
-
-        //la quantité
-
-        let quant = document.createElement('p');
-        quant.insertAdjacentHTML('afterbegin', product.quant)
-        productDivQuant.appendChild(quant);
-
-
-        //Input
-
-        let input = document.createElement('input');
-        input.insertAdjacentHTML('afterbegin', product.quant)
-        productDivQuant.appendChild(input);
-
-        //div englobant le paramètre suppression
-
+        productDivQuant.setAttribute('class', 'cart__item__settings__quantity');
         let productDivDelete = document.createElement('div');
         productDivDelete.setAttribute('class', 'cart__item__content__settings__delete');
+
+        let deletp = document.createElement('p');
+        deletp.insertAdjacentText('afterbegin', 'Supprimer'); //Mise en place d'un eventlistener sur le bouton supprimer
+        deletp.setAttribute('class', 'deleteItem');
+        productDivDelete.appendChild(deletp);
+
+
+        productDivsetting.appendChild(productDivQuant);
         productDivsetting.appendChild(productDivDelete);
+        //créer texte QTE avant le input <p>
 
-        //suppression
+        //Input 
 
-        /*var delete = document.createElement('p');
-        delete.insertAdjacentHTML('afterbegin', delete)
-        delete.setAttribute('class', 'deleteItem');
-        productDivDelete.appendChild(delete);
+        let input = document.createElement('input');
+        input.setAttribute('type', 'number');
+        input.setAttribute('class', 'itemQuantity');
+        input.setAttribute('name', 'itemQuantity');
+        input.setAttribute('name', 'itemQuantity');
+        input.setAttribute('min', 1);
+        input.setAttribute('max', 100);
+        input.setAttribute('value', currentProduct.numberproduct);
+        productDivQuant.appendChild(input);
 
+        //creation d'une fontion pour modifier quantité dans le panier localStorage.setItem
 
-
-
-
+        //div englobant le paramètre suppression
 
 
 
