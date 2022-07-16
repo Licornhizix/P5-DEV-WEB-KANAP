@@ -32,6 +32,7 @@ async function getProducts() {
 
             const buttonAjoutPanier = document.getElementById('addToCart');
             buttonAjoutPanier.addEventListener('click', ajoutPanier);
+            //buttonAjoutPanier.addEventListener('click', ajoutPanier);
 
             for (color in product.colors) {
                 var option = document.createElement('option');

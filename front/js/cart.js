@@ -89,8 +89,12 @@ async function getProducts() {
 
         let deletp = document.createElement('p');
         deletp.insertAdjacentText('afterbegin', 'Supprimer'); //Mise en place d'un eventlistener sur le bouton supprimer
+
+        /*const buttonSupprimer = document.getElementById('addToCart'); //il faut créer une fonction supp ds le LS
+        buttonAjoutPanier.addEventListener('click', ajoutPanier);*/
         deletp.setAttribute('class', 'deleteItem');
         productDivDelete.appendChild(deletp);
+
 
 
         productDivsetting.appendChild(productDivQuant);
