@@ -87,13 +87,57 @@ async function getProducts() {
         let productDivDelete = document.createElement('div');
         productDivDelete.setAttribute('class', 'cart__item__content__settings__delete');
 
+        //pour le mentora du 16/07/2022
+
         let deletp = document.createElement('p');
         deletp.insertAdjacentText('afterbegin', 'Supprimer'); //Mise en place d'un eventlistener sur le bouton supprimer
-
-        /*const buttonSupprimer = document.getElementById('addToCart'); //il faut créer une fonction supp ds le LS
-        buttonAjoutPanier.addEventListener('click', ajoutPanier);*/
         deletp.setAttribute('class', 'deleteItem');
         productDivDelete.appendChild(deletp);
+        /* const buttonSupprimer = document.getElementById('addToCart'); //il faut créer une fonction supp ds le LS
+         buttonSupprimer.addEventListener('click', ajoutPanier); //Je ne sais pas si le addeventlistener est obligatoire ici?
+
+          */
+
+        // Suppression d'un produit
+        function deleteProduct() {
+          let buttonSupprimer = document.querySelectorAll(".deleteItem");
+
+
+          //for (indexItem of cartJson) {
+
+
+          for (let i = 0; i < buttonSupprimer.length; i++) {
+            buttonSupprimer[i].addEventListener("click", (event) => {
+              event.preventDefault();
+              console.log(event);
+              localStorage.removeItem(localStorage.getItem(localStorage.key(i)).id + localStorage.getItem(localStorage.key(i)).colors);
+              //Selection de l'element à supprimer en fonction de son nom ET sa couleur
+
+              /*let product = JSON.parse(localStorage.getItem(localStorage.key(i)));
+              console.log(product);
+              /*let nameDelete = product.name;
+              let colorDelete = product.colors;
+              let newcartJson;
+              for (let y = 0; y < localStorage.length; y++) {
+
+                if () !== product) {
+                  newcartJson += localStorage.getItem(localStorage.key(y));
+                  console.log(localStorage.getItem(localStorage.key(y)));
+                }
+                console.log(localStorage.getItem(localStorage.key(y)));
+                localStorage.setItem(localStorage.getItem(localStorage.key(y)).key, newcartJson);
+              }*/
+              /* cartJson = cartJson.filter(el => localStorage.getItem(el) !== product);
+              console.log(cartJson);
+              localStorage.setItem("produit", JSON.stringify(cartJson));
+*/
+              //Alerte produit supprimé et rafraichissement page
+              alert("Ce produit a bien été supprimé du panier");
+              //location.reload();
+            })
+          }
+        }
+        deleteProduct();
 
 
 
@@ -117,8 +161,34 @@ async function getProducts() {
 
         //div englobant le paramètre suppression
 
+        //Création d'une fonction pour additionner les prix pour le total
+        function prixTotals() {
 
+          // Récupération du total des quantités création de 2 variables
+          var canapésQtt = document.getElementsByClassName('itemQuantity');
+          var myLength = elemsQtt.length,
+            totalQtt = 0;
 
+          for (var i = 0; i < myLength; ++i) {
+            totalQtt += canapésQtt[i].valueAsNumber;
+          }
+
+          let productTotalQuantity = document.getElementById('totalQuantity');
+          productTotalQuantity.innerHTML = totalQtt;
+          console.log(totalQtt);
+
+          // Récupération du prix total
+          totalPrice = 0;
+
+          for (var i = 0; i < myLength; ++i) {
+            totalPrice += (canapésQtt[i].valueAsNumber * produitLocalStorage[i].prixProduit);
+          }
+
+          let productTotalPrice = document.getElementById('totalPrice');
+          productTotalPrice.innerHTML = totalPrice;
+          console.log(totalPrice);
+        }
+        prixTotals();
 
 
 
