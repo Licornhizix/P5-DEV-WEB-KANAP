@@ -6,6 +6,9 @@ console.log(cartJson.name);
 
 let itemscontainer = document.getElementById('cart__items');
 async function getProducts() {
+  let quantityTotal = 0; //création de 2 variables pour la gestion de l'affichage des quantités restantes dans le panier
+  let priceTotal = 0;
+
   for (indexItem in cartJson) {
     console.log(indexItem);
 
@@ -23,14 +26,14 @@ async function getProducts() {
         console.log(product);
 
 
-        // Recuperer le prix, l'image, et les containers
+
 
         //création d'un élément
 
         let article = document.createElement('article'); //declaration variable avant de créé element
         article.setAttribute('class', 'cart__item'); //definition des attributs (1 attribut/ligne)
-        article.setAttribute('data-id', 'product.id');
-        article.setAttribute('data-color', 'product.colors');
+        article.setAttribute('data-id', currentProduct.id);
+        article.setAttribute('data-color', currentProduct.colors);
         itemscontainer.appendChild(article); //insertion de l'enfant article ds élement parent(section)
 
         //div englobant l'image
@@ -65,7 +68,7 @@ async function getProducts() {
         //description : la couleur ???
 
         let colors = document.createElement('p');
-        colors.insertAdjacentHTML('afterbegin', product.colors)
+        colors.insertAdjacentHTML('afterbegin', currentProduct.colors)
         productDivunder.appendChild(colors);
 
         //description : le prix 
@@ -87,11 +90,13 @@ async function getProducts() {
         let productDivDelete = document.createElement('div');
         productDivDelete.setAttribute('class', 'cart__item__content__settings__delete');
 
-        //pour le mentora du 16/07/2022
+
 
         let deletp = document.createElement('p');
         deletp.insertAdjacentText('afterbegin', 'Supprimer'); //Mise en place d'un eventlistener sur le bouton supprimer
         deletp.setAttribute('class', 'deleteItem');
+        deletp.setAttribute('data-id', currentProduct.id);
+        deletp.setAttribute('data-color', currentProduct.colors);
         productDivDelete.appendChild(deletp);
         /* const buttonSupprimer = document.getElementById('addToCart'); //il faut créer une fonction supp ds le LS
          buttonSupprimer.addEventListener('click', ajoutPanier); //Je ne sais pas si le addeventlistener est obligatoire ici?
@@ -137,7 +142,7 @@ async function getProducts() {
             })
           }
         }
-        deleteProduct();
+        //deleteProduct();
 
 
 
@@ -156,39 +161,79 @@ async function getProducts() {
         input.setAttribute('max', 100);
         input.setAttribute('value', currentProduct.numberproduct);
         productDivQuant.appendChild(input);
+        quantityTotal += parseInt(currentProduct.numberproduct); // quantityTotal = currentProduct.numberproduct + quantityTotal
+        priceTotal += parseInt(currentProduct.numberproduct) * parseInt(product.price);
+
+
 
         //creation d'une fontion pour modifier quantité dans le panier localStorage.setItem
 
-        //div englobant le paramètre suppression
+        // DEBUT DE LA SUPPRESSION ___________________________________________________________
+        deleteItem();
 
-        //Création d'une fonction pour additionner les prix pour le total
-        function prixTotals() {
 
-          // Récupération du total des quantités création de 2 variables
-          var canapésQtt = document.getElementsByClassName('itemQuantity');
-          var myLength = elemsQtt.length,
-            totalQtt = 0;
+        function deleteItem() {
+          //récupération du bouton supprimer
+          const deletedButton = document.querySelectorAll(".deleteItem"); //recupération des boutons 
+          deletedButton.forEach((items) => { //items désigne chaque occurence (chaque boutons supprimer)
+            items.addEventListener("click", () => {
+              var currentCart = [],
 
-          for (var i = 0; i < myLength; ++i) {
-            totalQtt += canapésQtt[i].valueAsNumber;
+                keys = Object.keys(localStorage),
+                i = keys.length;
+              while (i--) {
+                currentCart.push(localStorage.getItem(keys[i])); //pour envoyer les données ds le tableau vide au dessus
+              }
+              console.log(currentCart);
+              console.log(currentCart.length);
+              if (currentCart.length == 1) {
+                localStorage.clear();
+                window.location.href = "index.html" //renvoi à la page accueil
+              } else { //si plus d'1 produit 
+                console.log(currentCart);
+                for (let i = 0; i < currentCart.length; i++) { //on boucle sur les produits dans le panier (current cart)
+                  let currentItems = JSON.parse(currentCart[i]);
+                  console.log(items.dataset.id);
+                  if (currentItems.id == items.dataset.id && currentItems.colors == items.dataset.color) { // si l'id et la couleur du produit corrspond à l'id et la couleur du btn supprimer 
+                    localStorage.removeItem(currentItems.id + "" + currentItems.colors); //on supprime le produit
+                    window.location.href = "cart.html";
+                  }
+                }
+
+              };
+            })
+          })
+
+
+          function modifyQtt() {
+            let qttModif = document.querySelectorAll(".itemQuantity"); //récupération des quantités
+
+            for (let i = 0; i < qttModif.length; i++) {
+              qttModif[k].addEventListener("change", (event) => {
+                event.preventDefault();
+
+                //Selection de l'element à modifier en fonction de son id ET sa couleur
+                let quantityModif = currentCart[i].quantiteProduit;
+                let qttModifValue = qttModif[i].numberproduct;
+
+                const resultFind = currentCart.find((el) => el.qttModifValue !== quantityModif);
+
+                resultFind.quantiteProduit = qttModifValue;
+                produitLocalStorage[i].quantiteProduit = resultFind.quantiteProduit;
+
+                localStorage.setItem("produit", JSON.stringify(currentCart));
+
+                // Rafraichissement page
+                window.location.href = "cart.html";
+              })
+            }
           }
+          modifyQtt();
 
-          let productTotalQuantity = document.getElementById('totalQuantity');
-          productTotalQuantity.innerHTML = totalQtt;
-          console.log(totalQtt);
+        };
 
-          // Récupération du prix total
-          totalPrice = 0;
 
-          for (var i = 0; i < myLength; ++i) {
-            totalPrice += (canapésQtt[i].valueAsNumber * produitLocalStorage[i].prixProduit);
-          }
-
-          let productTotalPrice = document.getElementById('totalPrice');
-          productTotalPrice.innerHTML = totalPrice;
-          console.log(totalPrice);
-        }
-        prixTotals();
+        // FIN DE LA SUPRESSION ___________________________________________________________________________
 
 
 
@@ -234,8 +279,13 @@ async function getProducts() {
               const buttonAjoutPanier = document.getElementById('addToCart');
               buttonAjoutPanier.addEventListener('click', ajoutPanier);
 
-        */
+       */
+        let spanQuantity = document.getElementById('totalQuantity'); // 
+        spanQuantity.insertAdjacentText('afterbegin', quantityTotal);
+        let spanPrice = document.getElementById('totalPrice')
+        spanPrice.insertAdjacentText('afterbegin', priceTotal);
       })
+
       .catch(function (err) {
         // Une erreur est survenue
         console.log(err);
