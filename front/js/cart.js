@@ -206,26 +206,32 @@ async function getProducts() {
 
 
           function modifyQtt() {
-            let qttModif = document.querySelectorAll(".itemQuantity"); //récupération des quantités
-
+            let qttModif = document.querySelectorAll(".itemQuantity"); //récupération des quantités 
             for (let i = 0; i < qttModif.length; i++) {
-              qttModif[k].addEventListener("change", (event) => {
+              let currentCart = localStorage.getItem(localStorage.key(i));
+              let cartJson = JSON.parse(currentCart);
+
+              qttModif[i].addEventListener("change", (event) => {
                 event.preventDefault();
 
                 //Selection de l'element à modifier en fonction de son id ET sa couleur
-                let quantityModif = currentCart[i].quantiteProduit;
-                let qttModifValue = qttModif[i].numberproduct;
 
-                const resultFind = currentCart.find((el) => el.qttModifValue !== quantityModif);
+                console.log(qttModif[i].value);
+                let qttModifValue = qttModif[i].value;
 
-                resultFind.quantiteProduit = qttModifValue;
-                produitLocalStorage[i].quantiteProduit = resultFind.quantiteProduit;
+                //const resultFind = cartJson.find((el) => el.numberproduct !== quantityModif);
 
-                localStorage.setItem("produit", JSON.stringify(currentCart));
+                //resultFind.quantiteProduit = numberproduct;
+                cartJson.numberproduct = qttModifValue;
+
+                localStorage.setItem(cartJson.uk, JSON.stringify(cartJson));
 
                 // Rafraichissement page
-                window.location.href = "cart.html";
+
+
+                //window.location.href = "cart.html";
               })
+
             }
           }
           modifyQtt();
@@ -281,9 +287,9 @@ async function getProducts() {
 
        */
         let spanQuantity = document.getElementById('totalQuantity'); // 
-        spanQuantity.insertAdjacentText('afterbegin', quantityTotal);
+        spanQuantity.innerText = quantityTotal;
         let spanPrice = document.getElementById('totalPrice')
-        spanPrice.insertAdjacentText('afterbegin', priceTotal);
+        spanPrice.innerText = priceTotal;
       })
 
       .catch(function (err) {
