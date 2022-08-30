@@ -1,8 +1,9 @@
+//declaration des 2 constantes pour récuperer l'id dans l'url
+
 const urlparam = new URLSearchParams(window.location.search);
 const idproduct = urlparam.get('id');
 
-
-
+//declaration d'une fonction pour récupérer un article à partir de son id product
 async function getProducts() {
     fetch("http://localhost:3000/api/products/" + idproduct)
         .then(function (res) {
@@ -14,7 +15,9 @@ async function getProducts() {
         .then(function (product) {
             console.log(product);
 
-            const divproduct = document.getElementById('item__img');
+            // Insertion des élements de la page produit
+
+            const divproduct = document.getElementById('item__img'); //recupération d'un élements du dom à partir de son id
             var img = document.createElement('img');
             img.setAttribute("alt", product.name);
             img.src = product.imageUrl;
@@ -32,7 +35,7 @@ async function getProducts() {
 
             const buttonAjoutPanier = document.getElementById('addToCart');
             buttonAjoutPanier.addEventListener('click', ajoutPanier);
-            //buttonAjoutPanier.addEventListener('click', ajoutPanier);
+
 
             for (color in product.colors) {
                 var option = document.createElement('option');
@@ -52,7 +55,7 @@ async function getProducts() {
 
 
 }
-getProducts();
+getProducts(); //Appel de la fonction
 
 /*Creation d'un objet qui recupere tout les elements requis*/
 
@@ -61,9 +64,6 @@ function ajoutPanier() {
     let colors = document.getElementById('colors');
     let numberproduct = document.getElementById('quantity').value;
     let selectColor = colors.options[colors.selectedIndex].text;
-    /*idproduct*/
-
-
 
     /*On additionne les elements déja presents au panier en évitant une MAJ(ecrasement de données)*/
     let currentCart = JSON.parse(localStorage.getItem(idproduct + '' + selectColor))
@@ -83,28 +83,4 @@ function ajoutPanier() {
     }
     /*envoie des élements dans le local storage*/
     localStorage.setItem(idproduct + '' + selectColor, JSON.stringify(myproduct));
-
-
 }
-/*produits à enregister dans le localStorage*/
-
-/*let produitaStockerdansLs = JSON.parse(localStorage.getItem("produit")); /*converstion de l'objet en JSON pour le local storage*/
-
-/*console.log(produitaStockerdansLs);*/
-
-/* si des produits sont déjà dans le LS*/
-
-/*if (produitaStockerdansLs) {
-
-
-}*/
-/* si pas de produits  dans le LS*/
-/*else {
-    produitaStockerdansLs = [];
-
-    produitaStockerdansLs.push(colors) /*pour envoyer les infos dans un tableau*/
-
-/*console.log(produitaStockerdansLs);
-
-}
-*/

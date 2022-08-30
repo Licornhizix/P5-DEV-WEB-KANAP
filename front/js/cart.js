@@ -4,6 +4,7 @@ let cartJson = JSON.parse(currentCart);
 
 console.log(cartJson.name);
 
+//déclaration containere pour insertions des produits dans le panier
 let itemscontainer = document.getElementById('cart__items');
 async function getProducts() {
   let quantityTotal = 0; //création de 2 variables pour la gestion de l'affichage des quantités restantes dans le panier
@@ -12,9 +13,11 @@ async function getProducts() {
   for (indexItem in cartJson) {
     console.log(indexItem);
 
+    //recuperation des élements pour les disposer dans les lignes du panier
     let currentProduct = JSON.parse(localStorage.getItem(indexItem));
     console.log(currentProduct.id);
     let idproduct = currentProduct.id;
+    //On demande à l'Api le produit pour récuperer le prix
     fetch("http://localhost:3000/api/products/" + idproduct)
       .then(function (res) {
         if (res.ok) {
@@ -25,9 +28,6 @@ async function getProducts() {
       .then(function (product) {
         console.log(product);
 
-
-
-
         //création d'un élément
 
         let article = document.createElement('article'); //declaration variable avant de créé element
@@ -37,22 +37,26 @@ async function getProducts() {
         itemscontainer.appendChild(article); //insertion de l'enfant article ds élement parent(section)
 
         //div englobant l'image
+
         let productDivImg = document.createElement('div'); //declaration variable avant de créé plusieurs elements div 
         productDivImg.setAttribute('class', 'cart__item__img'); //definition des attributs (1 attribut/ligne)
         article.appendChild(productDivImg);
 
         //image
+
         var img = document.createElement('img');
         img.setAttribute("alt", product.name);
         img.src = product.imageUrl;
         productDivImg.appendChild(img);
 
         //div englobant le div de la description
+
         let productDivlook = document.createElement('div');
         productDivlook.setAttribute('class', 'cart__item__content');
         article.appendChild(productDivlook);
 
         //div la description
+
         let productDivunder = document.createElement('div');
         productDivunder.setAttribute('class', 'cart__item__content__description');
         productDivlook.appendChild(productDivunder);
@@ -77,7 +81,6 @@ async function getProducts() {
         price.insertAdjacentHTML('afterbegin', product.price)
         productDivunder.appendChild(price);
 
-
         //div englobant les paramètres 
         let productDivsetting = document.createElement('div');
         productDivsetting.setAttribute('class', 'cart__item__settings');
@@ -89,68 +92,38 @@ async function getProducts() {
         productDivQuant.setAttribute('class', 'cart__item__settings__quantity');
         let productDivDelete = document.createElement('div');
         productDivDelete.setAttribute('class', 'cart__item__content__settings__delete');
-
-
-
         let deletp = document.createElement('p');
         deletp.insertAdjacentText('afterbegin', 'Supprimer'); //Mise en place d'un eventlistener sur le bouton supprimer
         deletp.setAttribute('class', 'deleteItem');
         deletp.setAttribute('data-id', currentProduct.id);
         deletp.setAttribute('data-color', currentProduct.colors);
         productDivDelete.appendChild(deletp);
-        /* const buttonSupprimer = document.getElementById('addToCart'); //il faut créer une fonction supp ds le LS
-         buttonSupprimer.addEventListener('click', ajoutPanier); //Je ne sais pas si le addeventlistener est obligatoire ici?
 
-          */
 
         // Suppression d'un produit
+
         function deleteProduct() {
           let buttonSupprimer = document.querySelectorAll(".deleteItem");
 
 
-          //for (indexItem of cartJson) {
-
-
+          //création d'une boucle avec écouteurs d'évenements qui nous permet via le btn supprimer de choisir la bonne ligne à supprimer.
           for (let i = 0; i < buttonSupprimer.length; i++) {
             buttonSupprimer[i].addEventListener("click", (event) => {
               event.preventDefault();
               console.log(event);
               localStorage.removeItem(localStorage.getItem(localStorage.key(i)).id + localStorage.getItem(localStorage.key(i)).colors);
-              //Selection de l'element à supprimer en fonction de son nom ET sa couleur
 
-              /*let product = JSON.parse(localStorage.getItem(localStorage.key(i)));
-              console.log(product);
-              /*let nameDelete = product.name;
-              let colorDelete = product.colors;
-              let newcartJson;
-              for (let y = 0; y < localStorage.length; y++) {
-
-                if () !== product) {
-                  newcartJson += localStorage.getItem(localStorage.key(y));
-                  console.log(localStorage.getItem(localStorage.key(y)));
-                }
-                console.log(localStorage.getItem(localStorage.key(y)));
-                localStorage.setItem(localStorage.getItem(localStorage.key(y)).key, newcartJson);
-              }*/
-              /* cartJson = cartJson.filter(el => localStorage.getItem(el) !== product);
-              console.log(cartJson);
-              localStorage.setItem("produit", JSON.stringify(cartJson));
-*/
               //Alerte produit supprimé et rafraichissement page
               alert("Ce produit a bien été supprimé du panier");
-              //location.reload();
+
             })
           }
         }
-        //deleteProduct();
-
 
 
         productDivsetting.appendChild(productDivQuant);
         productDivsetting.appendChild(productDivDelete);
-        //créer texte QTE avant le input <p>
 
-        //Input 
 
         let input = document.createElement('input');
         input.setAttribute('type', 'number');
@@ -165,12 +138,8 @@ async function getProducts() {
         priceTotal += parseInt(currentProduct.numberproduct) * parseInt(product.price);
 
 
-
-        //creation d'une fontion pour modifier quantité dans le panier localStorage.setItem
-
         // DEBUT DE LA SUPPRESSION ___________________________________________________________
         deleteItem();
-
 
         function deleteItem() {
           //récupération du bouton supprimer
@@ -226,66 +195,176 @@ async function getProducts() {
 
                 localStorage.setItem(cartJson.uk, JSON.stringify(cartJson));
 
-                // Rafraichissement page
-
-
-                //window.location.href = "cart.html";
               })
 
             }
           }
           modifyQtt();
 
+          ////////////////////////////////FORMULAIRE DE CONTACT
+
+          //Récupération des coordonnées du formulaire client
+          const inputName = document.getElementById('firstName');
+          const inputLastName = document.getElementById('lastName');
+          const inputAdress = document.getElementById('address');
+          const inputCity = document.getElementById('city');
+          const inputMail = document.getElementById('email');
+
+          const errorinputName = document.getElementById("firstNameErrorMsg");
+          const errorinputLastName = document.getElementById("lastNameErrorMsg");
+          const errorinputAdress = document.getElementById("addressErrorMsg");
+          const errorinputCity = document.getElementById("cityErrorMsg");
+          const errorinputMail = document.getElementById("emailErrorMsg");
+
+          //Stockage des valeurs rentrées par l'utilisateur dans le formulaire
+
+          let valueName, valueLastName, valueAdress, valueCity, valueMail;
+
+          //Stockage des REGEX dans des varibles
+
+          let re = /^([a-zA-Z \-]+)$/;
+          let reAdress = /^([a-zA-Z0-9 \-]+)$/;
+          let reEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
+
+          inputName.addEventListener("input", function (e) {
+            valueName = inputName.value;
+            //champs prenom debut
+            if (valueName.length > 2 && re.test(valueName)) {
+              errorinputName.innerText = "";
+              console.log(valueName);
+              inputName.style.backgroundColor = "green";
+            } else {
+              errorinputName.innerText = "Veuillez remplir correctement ce champs";
+              console.log('rien');
+              inputName.style.backgroundColor = "red";
+            }
+          })
+          //champs prenom fin
+
+          //champ nom début
+          inputLastName.addEventListener("input", function (e) {
+            valueLastName = inputLastName.value;
+            //let re = /^([a-zA-Z \-]+)$/;
+            if (valueLastName.length > 2 && re.test(valueLastName)) {
+              errorinputLastName.innerText = "";
+              console.log(valueLastName);
+              inputLastName.style.backgroundColor = "green";
+            } else {
+              errorinputLastName.innerText = "Veuillez remplir correctement ce champs";
+              console.log('rien');
+              inputName.style.backgroundColor = "red";
+            }
+
+          })
+          //champ nom fin
+
+          //champ adress début
+
+          inputAdress.addEventListener("input", function (e) {
+            valueAdress = inputAdress.value;
+            //let re = /^([a-zA-Z \-]+)$/;
+            if (valueAdress.length > 2 && reAdress.test(valueAdress)) {
+              errorinputAdress.innerText = "";
+              console.log(valueAdress);
+              inputAdress.style.backgroundColor = "green";
+            } else {
+              errorinputAdress.innerText = "Veuillez remplir correctement ce champs";
+              console.log('rien');
+              inputAdress.style.backgroundColor = "red";
+            }
+
+          })
+
+          //champ adress fin
+
+          //champ City début
+
+          inputCity.addEventListener("input", function (e) {
+            valueCity = inputCity.value;
+            //let re = /^([a-zA-Z \-]+)$/;
+            if (valueCity.length > 2 && reAdress.test(valueCity)) {
+              errorinputCity.innerText = "";
+              console.log(valueCity);
+              inputCity.style.backgroundColor = "green";
+            } else {
+              errorinputCity.innerText = "Veuillez remplir correctement ce champs";
+              console.log('rien');
+              inputCity.style.backgroundColor = "red";
+            }
+
+          })
+
+          //champ City fin
+
+          //champ Email début
+
+          inputMail.addEventListener("input", function (e) {
+            valueMail = inputMail.value;
+
+            if (valueMail.length > 2 && reEmail.test(valueMail)) {
+              errorinputMail.innerText = "";
+              console.log(valueMail);
+              inputMail.style.backgroundColor = "green";
+            } else {
+              errorinputMail.innerText = "Veuillez remplir correctement ce champs";
+              console.log('rien');
+              inputMail.style.backgroundColor = "red";
+            }
+
+          })
+
+          //champ Email fin
+
+          const formCommander = document.querySelector('.cart__order__form');
+          console.log(formCommander);
+          formCommander.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (inputName.style.backgroundColor == "green" &&
+              inputLastName.style.backgroundColor == "green" &&
+              inputAdress.style.backgroundColor == "green" &&
+              inputCity.style.backgroundColor == "green" &&
+              inputMail.style.backgroundColor == "green") {
+              console.log("envoyer");
+
+              //création d'un objet contact à partir des données renseignées dans le formulaire de contact
+              let contact = {
+                firstName: inputName.value,
+                lastName: inputLastName.value,
+                address: inputAdress.value,
+                city: inputCity.value,
+                email: inputMail.value,
+
+              }
+              //récupération des id de nos produits
+              let data = JSON.parse(currentCart)._id || [];
+              //Objet qui stock avant l'envoie les données contacts et data
+              let send = {
+                contact: contact,
+                products: data,
+              }
+              //Création du paquet via la méthode POST
+              const promise = {
+                method: 'POST',
+                body: JSON.stringify(send),
+                headers: {
+                  'Content-Type': 'application/json',
+                }
+              }
+              console.log(contact);
+              //Envoie du paquet via le fetch
+              fetch("http://localhost:3000/api/products/order", promise)
+                .then(response => response.json())
+                .then(data => {
+                  //localStorage.setItem('orderId', data.orderId);
+                  //redirection vers la page comrimation avec pour paramètre l'order id de l'api
+                  document.location.href = 'confirmation.html?id=' + data.orderId;
+                });
+            }
+          });
+
         };
 
 
-        // FIN DE LA SUPRESSION ___________________________________________________________________________
-
-
-
-        /*<article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
-              <div class="cart__item__img">
-                <img src="../images/product01.jpg" alt="Photographie d'un canapé">
-              </div>
-              <div class="cart__item__content">
-                <div class="cart__item__content__description">
-                  <h2>Nom du produit</h2>
-                  <p>Vert</p>
-                  <p>42,00 €</p>
-                </div>
-                <div class="cart__item__content__settings">
-                  <div class="cart__item__content__settings__quantity">
-                    <p>Qté : </p>
-                    <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
-                  </div>
-                  <div class="cart__item__content__settings__delete">
-                    <p class="deleteItem">Supprimer</p>
-                  </div>
-                </div>
-              </div>
-            </article> -->
-
-            */
-
-        /*var img = document.createElement('img');
-              img.setAttribute("alt", product.name);
-              img.src = product.imageUrl;
-              divproduct.appendChild(img);
-
-              var price = document.getElementById('price');
-              price.insertAdjacentHTML('afterbegin', product.price)
-
-              var name = document.getElementById('title');
-              name.insertAdjacentHTML('afterbegin', product.name)
-
-              var description = document.getElementById('description');
-              description.insertAdjacentHTML('afterbegin', product.description)
-              var colors = document.getElementById('colors');
-
-              const buttonAjoutPanier = document.getElementById('addToCart');
-              buttonAjoutPanier.addEventListener('click', ajoutPanier);
-
-       */
         let spanQuantity = document.getElementById('totalQuantity'); // 
         spanQuantity.innerText = quantityTotal;
         let spanPrice = document.getElementById('totalPrice')
