@@ -139,6 +139,7 @@ async function getProducts() {
 
 
         // DEBUT DE LA SUPPRESSION ___________________________________________________________
+
         deleteItem();
 
         function deleteItem() {
@@ -155,7 +156,7 @@ async function getProducts() {
               }
               console.log(currentCart);
               console.log(currentCart.length);
-              if (currentCart.length == 1) {
+              if (currentCart.length < 1) {
                 localStorage.clear();
                 window.location.href = "index.html" //renvoi à la page accueil
               } else { //si plus d'1 produit 
